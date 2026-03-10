@@ -1,12 +1,17 @@
-# Kube-News
-
-Uma aplicação de notícias desenvolvida em NodeJS para demonstrar o uso de containers e Kubernetes.
+# News Reporter
 
 ## 📋 Sobre o Projeto
 
-O projeto Kube-News é uma aplicação web simples desenvolvida em Node.js, projetada como exemplo para demonstrar o uso de contêineres. É um portal de notícias que permite criar, visualizar e gerenciar artigos através de uma interface web.
+- O projeto é uma infraestutura para suportar uma aplicação web.
+- O objetivo é criar localmente uma infraestrutura em contêineres utilizando Docker e Kubernetes.
 
-### 🚀 Funcionalidades Principais
+## Sobre a Aplicação:
+
+- A aplicação é um Portal de Notícias. 
+- O objetivo é permitir criar, visualizar e gerenciar artigos através de uma interface web.
+- A aplicação foi construida utilizando Node.js.
+ 
+### Funcionalidades Principais
 
 - Listagem de notícias na página inicial
 - Criação de novas notícias através de formulário
@@ -15,33 +20,11 @@ O projeto Kube-News é uma aplicação web simples desenvolvida em Node.js, proj
 - Endpoints de health check para monitoramento
 - Coleta de métricas para Prometheus
 
-## 🛠️ Tecnologias Utilizadas
+### Tecnologias Utilizadas
 
 - **Backend**: Node.js com Express.js
 - **Frontend**: EJS (Embedded JavaScript) como motor de templates
 - **Banco de Dados**: PostgreSQL com Sequelize ORM
-- **Monitoramento**: Prometheus (via express-prom-bundle)
-
-## 📦 Estrutura do Projeto
-
-```
-/
-├── src/                      # Código-fonte principal
-│   ├── models/               # Modelos de dados
-│   │   └── post.js           # Definição do modelo Post
-│   ├── views/                # Templates EJS
-│   │   ├── partial/          # Componentes parciais (header, footer)
-│   │   ├── edit-news.ejs     # Formulário de edição
-│   │   ├── index.ejs         # Página principal
-│   │   └── view-news.ejs     # Visualização de notícia
-│   ├── static/               # Arquivos estáticos (CSS, imagens)
-│   ├── middleware.js         # Middlewares personalizados
-│   ├── server.js             # Ponto de entrada da aplicação
-│   ├── system-life.js        # Endpoints de health check
-│   └── package.json          # Dependências
-├── popula-dados.http         # Arquivo para popular o banco com dados de exemplo
-└── README.md                 # Documentação
-```
 
 ## 🔧 Configuração
 
@@ -52,79 +35,30 @@ O projeto Kube-News é uma aplicação web simples desenvolvida em Node.js, proj
 - Docker (opcional, para containerização)
 - Kubernetes (opcional, para orquestração)
 
-### Variáveis de Ambiente
 
-Para configurar a aplicação, defina as seguintes variáveis de ambiente:
+## Como utilizar o projeto:
 
-| Variável | Descrição | Valor Padrão |
-|----------|-----------|--------------|
-| DB_DATABASE | Nome do banco de dados | kubedevnews |
-| DB_USERNAME | Usuário do banco de dados | kubedevnews |
-| DB_PASSWORD | Senha do usuário | Pg#123 |
-| DB_HOST | Endereço do banco de dados | localhost |
-| DB_PORT | Porta do banco de dados | 5432 |
-| DB_SSL_REQUIRE | Habilitar SSL para conexão | false |
+### Executando o projeto:
+```sh
+# Executando o K8S
+kubectl apply -f k8s/deployment.yaml
 
-## 🚀 Instalação e Execução
-
-### Execução Local
-
-1. Clone o repositório
-2. Instale as dependências:
-   ```bash
-   cd src
-   npm install
-   ```
-3. Configure as variáveis de ambiente necessárias
-4. Inicie a aplicação:
-   ```bash
-   npm start
-   ```
-5. Acesse a aplicação em [http://localhost:8080](http://localhost:8080)
-
-### População de Dados de Exemplo
-
-Utilize o arquivo `popula-dados.http` para inserir notícias de exemplo:
-
-```bash
-# Com uma ferramenta como o REST Client no VS Code ou curl
-POST http://localhost:8080/api/post
-Content-Type: application/json
-# Conteúdo do arquivo popula-dados.http
+# Acessando o projeto
+https://localhost:30000
 ```
 
-## 📊 Monitoramento e Health Checks
+### Comandos úteis:
+```sh
+# Exibindo o status do deploy
+kubectl get deploy
 
-A aplicação disponibiliza endpoints para monitoramento e também recursos para simular cenários de falha, muito úteis para testar a resiliência em ambientes Kubernetes:
+# Exibindo o status do replicaset
+kubectl get replicaset
 
-### Endpoints de Monitoramento
-- `/health` - Verifica o estado atual da aplicação (retorna status da aplicação e hostname da máquina)
-- `/ready` - Verifica se a aplicação está pronta para receber tráfego
-- `/metrics` - Métricas do Prometheus (geradas pelo express-prom-bundle)
+# Exibindo o status dos Pods
+kubectl get pod
 
-### Simulação de Falhas (Chaos Engineering)
-- `/unhealth` - (PUT) Altera o estado da aplicação para não saudável. Todas as requisições subsequentes receberão status code 500.
-- `/unreadyfor/:seconds` - (PUT) Simula indisponibilidade temporária por um número específico de segundos. Durante este período, o endpoint `/ready` retornará status code 500.
+# Exibindo todos os status
+kubectl get all
 
-Estes recursos de simulação de falhas são extremamente úteis para testar:
-- Comportamento de probes de liveness e readiness no Kubernetes
-- Políticas de retry e circuit breaker
-- Mecanismos de failover
-- Resiliência geral da sua infraestrutura
-
-## 🔒 Modelo de Dados
-
-O projeto utiliza um único modelo `Post` com os seguintes campos:
-
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| title | String | Título da notícia (limite: 30 caracteres) |
-| summary | String | Resumo da notícia (limite: 50 caracteres) |
-| content | String | Conteúdo completo (limite: 2000 caracteres) |
-| publishDate | Date | Data de publicação |
-
-
-## Pré-requisito
-
-- Docker
-- KIND
+```

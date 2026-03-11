@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - name: news-reporter
-          image: cleversonneves/news-reporter:1.0.0
+          image: clevernvs/news-reporter:1.0.0
           env:
             - name: DB_HOST
               value: "postgresql"
